@@ -1,25 +1,61 @@
 # Standard Go Project Layout
 
+Layout:
+
+```plaintext
+api/                            # API-related specs, JSON schema files, protocol definition files.
+assets/                         # Static assets such as images, fonts, etc.
+build/                          # Build-related files and configurations
+│   ├── ci/                     # Continuous Integration configurations (e.g., GitHub Actions, CircleCI)
+│   └── package/                # Packaging configurations (e.g., Docker, tarballs)
+cmd/                            # Main entry points for commands (main package)
+│   └── _your_app_/             # Application command for starting the app, handling migrations, etc.
+configs/                        # Configuration files for different environments (e.g., dev, prod)
+deployments/                    # Deployment-related configurations and scripts
+docs/                           # Documentation files for the project
+examples/                       # Example configurations or use cases for developers
+githooks/                       # Git hooks for automated tasks (e.g., pre-commit, pre-push)
+init/                           # Initialization scripts or application setup routines
+internal/                       # Internal application logic (not to be exposed publicly)
+│   ├── app/                    # Internal application logic for handling requests, business rules
+│   │   └── _your_app_/         # Specific logic for your application’s core functionality
+│   └── pkg/                    # Internal reusable packages (e.g., shared utilities, helpers)
+│       └── _your_private_lib_/ # Private library with internal functions and methods
+pkg/                            # Public packages that can be reused by other applications
+│   └── _your_public_lib_/      # Reusable public library with functionality exposed for external use
+scripts/                        # Utility scripts for tasks like database migration, deployment, etc.
+test/                           # Unit and integration tests for the application
+third_party/                    # Third-party libraries or services used in the project
+tools/                          # Developer tools and utilities (e.g., code generators, linters)
+vendor/                         # Vendor directory for managing third-party dependencies (if not using modules)
+web/                            # Web application-specific files (server-side)
+│   ├── app/                    # Core web application logic (controllers, views)
+│   ├── static/                 # Static files served by the web server (CSS, JS, images)
+│   └── template/               # Template files for rendering views (HTML, JSX, etc.)
+website/                        # Project's website data if you are not using GitHub pages.
+go.mod                          # Module github.com/YOUR_USER_OR_ORG_NAME/YOUR_REPO_NAME
+```
+
 Translations:
 
-* [한국어 문서](README_ko.md)
-* [简体中文](README_zh.md)
-* [正體中文](README_zh-TW.md)
-* [简体中文](README_zh-CN.md) - ???
-* [Français](README_fr.md)
-* [日本語](README_ja.md)
-* [Português](README_ptBR.md)
-* [Español](README_es.md)
-* [Română](README_ro.md)
-* [Русский](README_ru.md)
-* [Türkçe](README_tr.md)
-* [Italiano](README_it.md)
-* [Tiếng Việt](README_vi.md)
-* [Українська](README_ua.md)
-* [Indonesian](README_id.md)
-* [हिन्दी](README_hi.md)
-* [فارسی](README_fa.md)
-* [Беларуская](README_by.md)
+- [한국어 문서](README_ko.md)
+- [简体中文](README_zh.md)
+- [正體中文](README_zh-TW.md)
+- [简体中文](README_zh-CN.md) - ???
+- [Français](README_fr.md)
+- [日本語](README_ja.md)
+- [Português](README_ptBR.md)
+- [Español](README_es.md)
+- [Română](README_ro.md)
+- [Русский](README_ru.md)
+- [Türkçe](README_tr.md)
+- [Italiano](README_it.md)
+- [Tiếng Việt](README_vi.md)
+- [Українська](README_ua.md)
+- [Indonesian](README_id.md)
+- [हिन्दी](README_hi.md)
+- [فارسی](README_fa.md)
+- [Беларуская](README_by.md)
 
 ## Overview
 
@@ -27,7 +63,7 @@ This is a basic layout for Go application projects. Note that it's basic in term
 
 This is **`NOT an official standard defined by the core Go dev team`**. This is a set of common historical and emerging project layout patterns in the Go ecosystem. Some of these patterns are more popular than others. It also has a number of small enhancements along with several supporting directories common to any large enough real world application. Note that the **core Go team provides a great set of general guidelines about structuring Go projects** and what it means for your project when it's imported and when it's installed. See the [`Organizing a Go module`](https://go.dev/doc/modules/layout) page in the official Go docs for more details. It includes the `internal` and `cmd` directory patterns (described below) and other useful information.
 
-**`If you are trying to learn Go or if you are building a PoC or a simple project for yourself this project layout is an overkill. Start with something really simple instead (a single `main.go` file and `go.mod` is more than enough).`** As your project grows keep in mind that it'll be important to make sure your code is well structured otherwise you'll end up with a messy code with lots of hidden dependencies and global state. When you have more people working on the project you'll need even more structure. That's when it's important to introduce a common way to manage packages/libraries. When you have an open source project or when you know other projects import the code from your project repository that's when it's important to have private (aka `internal`) packages and code. Clone the repository, keep what you need and delete everything else! Just because it's there it doesn't mean you have to use it all. None of these patterns are used in every single project. Even the `vendor` pattern is not universal.
+**`If you are trying to learn Go or if you are building a PoC or a simple project for yourself this project layout is an overkill. Start with something really simple instead (a single `main.go`file and`go.mod` is more than enough).`** As your project grows keep in mind that it'll be important to make sure your code is well structured otherwise you'll end up with a messy code with lots of hidden dependencies and global state. When you have more people working on the project you'll need even more structure. That's when it's important to introduce a common way to manage packages/libraries. When you have an open source project or when you know other projects import the code from your project repository that's when it's important to have private (aka `internal`) packages and code. Clone the repository, keep what you need and delete everything else! Just because it's there it doesn't mean you have to use it all. None of these patterns are used in every single project. Even the `vendor` pattern is not universal.
 
 With Go 1.14 [`Go Modules`](https://go.dev/wiki/Modules) are finally ready for production. Use [`Go Modules`](https://blog.golang.org/using-go-modules) unless you have a specific reason not to use them and if you do then you don’t need to worry about $GOPATH and where you put your project. The basic `go.mod` file in the repo assumes your project is hosted on GitHub, but it's not a requirement. The module path can be anything though the first module path component should have a dot in its name (the current version of Go doesn't enforce it anymore, but if you are using slightly older versions don't be surprised if your builds fail without it). See Issues [`37554`](https://github.com/golang/go/issues/37554) and [`32819`](https://github.com/golang/go/issues/32819) if you want to know more about it.
 
@@ -36,22 +72,25 @@ This project layout is intentionally generic and it doesn't try to impose a spec
 This is a community effort. Open an issue if you see a new pattern or if you think one of the existing patterns needs to be updated.
 
 If you need help with naming, formatting and style start by running [`gofmt`](https://golang.org/cmd/gofmt/) and [`staticcheck`](https://github.com/dominikh/go-tools/tree/master/cmd/staticcheck). The previous standard linter, golint, is now deprecated and not maintained; use of a maintained linter such as staticcheck is recommended. Also make sure to read these Go code style guidelines and recommendations:
-* https://talks.golang.org/2014/names.slide
-* https://golang.org/doc/effective_go.html#names
-* https://blog.golang.org/package-names
-* https://go.dev/wiki/CodeReviewComments
-* [Style guideline for Go packages](https://rakyll.org/style-packages) (rakyll/JBD)
+
+- https://talks.golang.org/2014/names.slide
+- https://golang.org/doc/effective_go.html#names
+- https://blog.golang.org/package-names
+- https://go.dev/wiki/CodeReviewComments
+- [Style guideline for Go packages](https://rakyll.org/style-packages) (rakyll/JBD)
 
 See [`Go Project Layout`](https://medium.com/golang-learn/go-project-layout-e5213cdcfaa2) for additional background information.
 
 More about naming and organizing packages as well as other code structure recommendations:
-* [GopherCon EU 2018: Peter Bourgon - Best Practices for Industrial Programming](https://www.youtube.com/watch?v=PTE4VJIdHPg)
-* [GopherCon Russia 2018: Ashley McNamara + Brian Ketelsen - Go best practices.](https://www.youtube.com/watch?v=MzTcsI6tn-0)
-* [GopherCon 2017: Edward Muller - Go Anti-Patterns](https://www.youtube.com/watch?v=ltqV6pDKZD8)
-* [GopherCon 2018: Kat Zien - How Do You Structure Your Go Apps](https://www.youtube.com/watch?v=oL6JBUk6tj0)
+
+- [GopherCon EU 2018: Peter Bourgon - Best Practices for Industrial Programming](https://www.youtube.com/watch?v=PTE4VJIdHPg)
+- [GopherCon Russia 2018: Ashley McNamara + Brian Ketelsen - Go best practices.](https://www.youtube.com/watch?v=MzTcsI6tn-0)
+- [GopherCon 2017: Edward Muller - Go Anti-Patterns](https://www.youtube.com/watch?v=ltqV6pDKZD8)
+- [GopherCon 2018: Kat Zien - How Do You Structure Your Go Apps](https://www.youtube.com/watch?v=oL6JBUk6tj0)
 
 A Chinese post about Package-Oriented-Design guidelines and Architecture layer
-* [面向包的设计和架构分层](https://github.com/danceyoung/paper-code/blob/master/package-oriented-design/packageorienteddesign.md)
+
+- [面向包的设计和架构分层](https://github.com/danceyoung/paper-code/blob/master/package-oriented-design/packageorienteddesign.md)
 
 ## Go Directories
 
@@ -143,7 +182,7 @@ IaaS, PaaS, system and container orchestration deployment configurations and tem
 
 ### `/test`
 
-Additional external test apps and test data. Feel free to structure the `/test` directory anyway you want. For bigger projects it makes sense to have a data subdirectory. For example, you can have `/test/data` or `/test/testdata` if you need Go to ignore what's in that directory. Note that Go will also ignore directories or files that begin with "." or "_", so you have more flexibility in terms of how you name your test data directory.
+Additional external test apps and test data. Feel free to structure the `/test` directory anyway you want. For bigger projects it makes sense to have a data subdirectory. For example, you can have `/test/data` or `/test/testdata` if you need Go to ignore what's in that directory. Note that Go will also ignore directories or files that begin with "." or "\_", so you have more flexibility in terms of how you name your test data directory.
 
 See the [`/test`](test/README.md) directory for examples.
 
@@ -193,24 +232,23 @@ Some Go projects do have a `src` folder, but it usually happens when the devs ca
 
 Don't confuse the project level `/src` directory with the `/src` directory Go uses for its workspaces as described in [`How to Write Go Code`](https://golang.org/doc/code.html). The `$GOPATH` environment variable points to your (current) workspace (by default it points to `$HOME/go` on non-windows systems). This workspace includes the top level `/pkg`, `/bin` and `/src` directories. Your actual project ends up being a sub-directory under `/src`, so if you have the `/src` directory in your project the project path will look like this: `/some/path/to/workspace/src/your_project/src/your_code.go`. Note that with Go 1.11 it's possible to have your project outside of your `GOPATH`, but it still doesn't mean it's a good idea to use this layout pattern.
 
-
 ## Badges
 
-* [Go Report Card](https://goreportcard.com/) - It will scan your code with `gofmt`, `go vet`, `gocyclo`, `golint`, `ineffassign`, `license` and `misspell`. Replace `github.com/golang-standards/project-layout` with your project reference.
+- [Go Report Card](https://goreportcard.com/) - It will scan your code with `gofmt`, `go vet`, `gocyclo`, `golint`, `ineffassign`, `license` and `misspell`. Replace `github.com/golang-standards/project-layout` with your project reference.
 
-    [![Go Report Card](https://goreportcard.com/badge/github.com/golang-standards/project-layout?style=flat-square)](https://goreportcard.com/report/github.com/golang-standards/project-layout)
+  [![Go Report Card](https://goreportcard.com/badge/github.com/golang-standards/project-layout?style=flat-square)](https://goreportcard.com/report/github.com/golang-standards/project-layout)
 
-* ~~[GoDoc](http://godoc.org) - It will provide online version of your GoDoc generated documentation. Change the link to point to your project.~~
+- ~~[GoDoc](http://godoc.org) - It will provide online version of your GoDoc generated documentation. Change the link to point to your project.~~
 
-    [![Go Doc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](http://godoc.org/github.com/golang-standards/project-layout)
+  [![Go Doc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](http://godoc.org/github.com/golang-standards/project-layout)
 
-* [Pkg.go.dev](https://pkg.go.dev) - Pkg.go.dev is a new destination for Go discovery & docs. You can create a badge using the [badge generation tool](https://pkg.go.dev/badge).
+- [Pkg.go.dev](https://pkg.go.dev) - Pkg.go.dev is a new destination for Go discovery & docs. You can create a badge using the [badge generation tool](https://pkg.go.dev/badge).
 
-    [![PkgGoDev](https://pkg.go.dev/badge/github.com/golang-standards/project-layout)](https://pkg.go.dev/github.com/golang-standards/project-layout)
+  [![PkgGoDev](https://pkg.go.dev/badge/github.com/golang-standards/project-layout)](https://pkg.go.dev/github.com/golang-standards/project-layout)
 
-* Release - It will show the latest release number for your project. Change the github link to point to your project.
+- Release - It will show the latest release number for your project. Change the github link to point to your project.
 
-    [![Release](https://img.shields.io/github/release/golang-standards/project-layout.svg?style=flat-square)](https://github.com/golang-standards/project-layout/releases/latest)
+  [![Release](https://img.shields.io/github/release/golang-standards/project-layout.svg?style=flat-square)](https://github.com/golang-standards/project-layout/releases/latest)
 
 ## Notes
 
