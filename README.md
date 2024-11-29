@@ -3,7 +3,7 @@
 Layout:
 
 ```plaintext
-api/                            # API-related specs, JSON schema files, protocol definition files.
+api/                            # API-related specs, JSON schema files, protocol definition files
 assets/                         # Static assets such as images, fonts, etc.
 build/                          # Build-related files and configurations
 │   ├── ci/                     # Continuous Integration configurations (e.g., GitHub Actions, CircleCI)
@@ -25,14 +25,14 @@ pkg/                            # Public packages that can be reused by other ap
 │   └── _your_public_lib_/      # Reusable public library with functionality exposed for external use
 scripts/                        # Utility scripts for tasks like database migration, deployment, etc.
 test/                           # Unit and integration tests for the application
-third_party/                    # Third-party libraries or services used in the project
+third_party/                    # External forked code and other 3rd party utilities (e.g., Swagger UI)
 tools/                          # Developer tools and utilities (e.g., code generators, linters)
 vendor/                         # Vendor directory for managing third-party dependencies (if not using modules)
 web/                            # Web application-specific files (server-side)
 │   ├── app/                    # Core web application logic (controllers, views)
 │   ├── static/                 # Static files served by the web server (CSS, JS, images)
 │   └── template/               # Template files for rendering views (HTML, JSX, etc.)
-website/                        # Project's website data if you are not using GitHub pages.
+website/                        # Project's website data if you are not using GitHub pages
 go.mod                          # Module github.com/YOUR_USER_OR_ORG_NAME/YOUR_REPO_NAME
 ```
 
